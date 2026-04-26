@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AniMedia | Real-Time Library</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome for Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- GSAP for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link rel="stylesheet" href="series.css" />
+  </head>
+  <body>
+    <header>
+      <div class="bg-image"></div>
+      <div class="xeno">
+        <div class="logo">Ani<span>Media</span></div>
+
+        <nav>
+          <a href="home-page.html">Home</a>
+          <a href="series.html">Series</a>
+          <a href="A1-explore.html">Movies</a>
+          <a href="genre.html">Genres</a>
+        </nav>
+
+        <a href="Aimiddle-page.html" class="cta">Join Now</a>
+
+        <button class="hamburger" onclick="toggleMobileMenu()">☰</button>
+      </div>
+
+      <div class="mobile-menu" id="mobileMenu">
+        <a href="home-page.html">Home</a>
+        <a href="series.html">Series</a>
+        <a href="A1-explore.html">Movies</a>
+        <a href="genre.html">Genres</a>
+        <a href="#" class="cta" style="width: fit-content">Join Now</a>
+      </div>
+    </header>
+
+    <div class="cursor"></div>
+    <div id="header"></div>
+    <div class="bg-container">
+      <img src="assets/hero_bg.jpg" alt="Background" class="bg-image" />
+      <div class="bg-overlay"></div>
+    </div>
+
+    <video autoplay muted loop playsinline id="bg-video">
+      <source src="❤️X/horizon-sky-tree-moewalls-com.mp4" type="video/mp4" />
+    </video>
+
+    <main>
+      <div class="page-header">
+        <div>
+          <h2>Live Library</h2>
+        </div>
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" id="searchInput" placeholder="Search anime..." />
+        </div>
+      </div>
+
+      <section class="grid" id="animeGrid">
+        <!-- Cards will be dynamically injected here -->
+        <div class="loader"><i class="fas fa-circle-notch fa-spin"></i></div>
+      </section>
+
+      <div class="alpha-nav" id="alphaNav">
+        <!-- Alphabet buttons will be injected here -->
+      </div>
+
+      <div class="bottom-nav" id="pagination">
+        <button class="nav-button" id="prevBtn" disabled>Prev</button>
+        <span id="pageNumber">1</span>
+        <button class="nav-button" id="nextBtn">Next</button>
+      </div>
+    </main>
+
+    <footer>
+      <div class="end">
+        Ani<span>Media</span>
+        <hr />
+        <div class="footer-links">
+          <p>All rights reserved</p>
+          <p>animedia@gmail.com</p>
+          <p>Terms and Conditions</p>
+          <p>Registered 2025</p>
+          <p>&copy; AniMedia</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="home-page.js"></script>
+    <script>
+      const API_BASE = "https://api.jikan.moe/v4";
+      let currentPage = 1;
+      let searchQuery = "";
+      let currentLetter = "";
+      let isLoading = false;
+
+      const grid = document.getElementById("animeGrid");
+      const searchInput = document.getElementById("searchInput");
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const pageNumDisplay = document.getElementById("pageNumber");
+      const pagination = document.getElementById("pagination");
+      const pageHeader = document.querySelector(".page-header");
+      const alphaNav = document.getElementById("alphaNav");
+
+      const cursor = document.querySelector(".cursor");
+      document.addEventListener("mousemove", (e) => {
+        cursor.style.left = e.clientX + "px";
+        cursor.style.top = e.clientY + "px";
+      });
+
+      // Initialize Alphabetical Navigation
+      function initAlphaNav() {
+        const letters = ["#", "0-9", ..."ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("")];
+        alphaNav.innerHTML = letters
+          .map(
+            (char) => `
+                <button class="alpha-btn ${char === "#" && !currentLetter && !searchQuery ? "active" : ""}" 
+                        onclick="filterByLetter('${char}')">${char}</button>
+            `,
+          )
+          .join("");
+      }
+
+      async function filterByLetter(char) {
+        document
+          .querySelectorAll(".alpha-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+        event.target.classList.add("active");
+
+        searchInput.value = "";
+        searchQuery = "";
+        currentPage = 1;
+
+        if (char === "#") {
+          currentLetter = "";
+        } else if (char === "0-9") {
+          currentLetter = "0-9"; // Special handling for Jikan might be needed, or just search for it
+        } else {
+          currentLetter = char;
+        }
+
+        fetchAnime(1);
+      }
+
+      async function fetchAnime(page = 1) {
+        if (isLoading) return;
+        isLoading = true;
+
+        let url = "";
+        if (searchQuery) {
+          url = `${API_BASE}/anime?q=${searchQuery}&page=${page}&limit=20`;
+        } else if (currentLetter) {
+          // Jikan API uses letter parameter for filtering by starting character
+          const letterParam =
+            currentLetter === "0-9" ? "" : `&letter=${currentLetter}`;
+          url = `${API_BASE}/anime?page=${page}&limit=20${letterParam}&order_by=title&sort=asc`;
+        } else {
+          url = `${API_BASE}/top/anime?page=${page}&limit=20`;
+        }
+
+        try {
+          const response = await fetch(url);
+          const data = await response.json();
+          renderCards(data.data);
+          updatePagination(data.pagination);
+        } catch (error) {
+          console.error("Error fetching anime:", error);
+          grid.innerHTML =
+            '<div class="loader">Failed to load data. Please try again.</div>';
+        } finally {
+          isLoading = false;
+        }
+      }
+
+      function renderCards(animeList) {
+        grid.innerHTML = "";
+
+        if (!animeList || animeList.length === 0) {
+          grid.innerHTML = '<div class="loader">No results found.</div>';
+          return;
+        }
+
+        animeList.forEach((anime, index) => {
+          const card = document.createElement("article");
+          card.className = "card";
+          card.onclick = () =>
+            (window.location.href = `description-page.html?id=${anime.mal_id}`);
+
+          card.innerHTML = `
+                    <div class="poster">
+                        <div class="score-tag">${anime.score || "N/A"}</div>
+                        <img src="${anime.images.webp.large_image_url}" alt="${anime.title}" loading="lazy">
+                    </div>
+                    <div class="info">
+                        <a href="description-page.html?id=${anime.mal_id}" class="title-link">
+                            <div class="title" title="${anime.title}">${anime.title}</div>
+                        </a>
+                        <div class="subtitle">
+                            <span>${anime.type || "TV"}</span>
+                            <span>${anime.year || anime.status}</span>
+                        </div>
+                        <div class="badges">
+                            <div class="badge active">EP: ${anime.episodes || "?"}</div>
+                            <div class="badge">SUB</div>
+                        </div>
+                    </div>
+                `;
+
+          grid.appendChild(card);
+
+          gsap.to(card, {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            delay: index * 0.05,
+            ease: "power2.out",
+          });
+        });
+
+        gsap.to(pageHeader, { opacity: 1, y: 0, duration: 1 });
+        gsap.to(alphaNav, { opacity: 1, y: 0, duration: 1, delay: 0.2 });
+        gsap.to(pagination, { opacity: 1, duration: 1, delay: 0.3 });
+      }
+
+      function updatePagination(pagin) {
+        currentPage = pagin.current_page;
+        pageNumDisplay.textContent = currentPage;
+        prevBtn.disabled = currentPage === 1;
+        nextBtn.disabled = !pagin.has_next_page;
+      }
+
+      prevBtn.addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage--;
+          fetchAnime(currentPage);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      });
+
+      nextBtn.addEventListener("click", () => {
+        currentPage++;
+        fetchAnime(currentPage);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      let searchTimeout;
+      searchInput.addEventListener("input", (e) => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+          searchQuery = e.target.value;
+          currentLetter = "";
+          document
+            .querySelectorAll(".alpha-btn")
+            .forEach((btn) => btn.classList.remove("active"));
+          currentPage = 1;
+          fetchAnime(currentPage, searchQuery);
+        }, 500);
+      });
+
+      window.onload = () => {
+        initAlphaNav();
+        fetchAnime();
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,176 @@
+/* Base card styling for modern aesthetics */
+.community-panel {
+  background: #1e1e1e; /* Slightly lighter dark background for the component */
+  border-radius: 12px;
+  overflow: hidden;
+  /* Removed backdrop-filter for performance and a cleaner look, unless strictly required */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4); /* Stronger, more dramatic shadow */
+  width: 100%;
+  max-width: 1200px; /* Limit max width for better readability */
+  margin: 15px auto;
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: #252525; /* Header color */
+}
+
+.panel-header h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ffffff; /* White text for header */
+}
+
+.panel-icons {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* Icon buttons - now look like sleek player controls */
+.panel-icons button {
+  background: none;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px; /* Slightly square controls */
+  width: 38px;
+  height: 38px;
+  color: #e0e0e0;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Hover effect using the accent color */
+.panel-icons button:hover {
+  background: #ff8a65; /* Accent color on hover */
+  color: #121212; /* Dark text on accent background */
+  border-color: #ff8a65;
+  transform: translateY(-2px);
+}
+
+.panel-icons button a {
+  color: #e0e0e0;
+}
+
+/* Hover effect using the accent color */
+.panel-icons button:hover {
+  background: #ff8a65; /* Accent color on hover */
+  color: #121212; /* Dark text on accent background */
+  border-color: #ff8a65;
+  transform: translateY(-2px);
+}
+
+.panel-icons a {
+  display: block; /* Ensure the link fills the button for a larger clickable area */
+}
+
+.panel-body {
+  /* Remove the background image for a cleaner panel and better text readability */
+  background: url("assets/img5.jpg") center/cover no-repeat;
+  padding: 2.5rem;
+  /* text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5); - Not needed on a dark background */
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #b0b0b0; /* Slightly muted text color */
+}
+
+/* --- Category Grid Styling --- */
+.cate {
+  display: grid;
+  /* Use modern CSS functions for a flexible grid layout */
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 10px 5px;
+  /*max-width: 1200px;*/
+  margin: auto;
+}
+
+/* Responsive card - Simplified and modern look */
+.lint {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 6px; /* Softened corners */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  /* Removed the complex clip-path for a cleaner card shape */
+  /* Removed the border for a borderless floating look */
+}
+
+/* Hover effect - lift and glow with accent color */
+.lint:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0 15px rgba(255, 138, 101, 0.6); /* Accent glow */
+}
+
+.lint img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.65); /* Slightly darker for text contrast */
+  transition: filter 0.3s ease;
+}
+
+.lint:hover img {
+  filter: brightness(0.8); /* Slight brightening on hover */
+}
+
+/* Overlay text and gradient */
+.lint::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* Subtle linear gradient at the bottom for text readability */
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0) 50%
+  );
+  backdrop-filter: none; /* Removed blur for performance */
+  z-index: 1;
+}
+
+.lint h3 {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  margin: 0;
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  z-index: 2;
+}
+
+/* --- Media Queries for Responsiveness --- */
+@media (max-width: 900px) {
+  .cate {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .cate {
+    grid-template-columns: repeat(2, 1fr); /* Two columns on small screens */
+    padding: 15px;
+  }
+
+  .panel-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .panel-header h3 {
+    margin-bottom: 0.5rem;
+  }
+}
