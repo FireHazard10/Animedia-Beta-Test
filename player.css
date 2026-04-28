@@ -1,0 +1,935 @@
+:root {
+  --primary: #ff8a65;
+  --primary-light: #ffc371;
+  --secondary: #6366f1;
+  --accent: #f43f5e;
+  --bg-dark: #0f172a;
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --card-bg: rgba(255, 255, 255, 0.03);
+  --bg: rgba(255, 255, 255, 0.06);
+  --card-radius: 12px;
+  --accent: #ff8a65;
+  --glow: rgba(255, 138, 101, 0.35);
+  --text: #fff;
+  --muted: rgba(255, 255, 255, 0.6);
+  --dark-bg: #000;
+}
+
+/* Theme variations */
+.theme-neon {
+  --accent: #00f5ff;
+  --glow: rgba(0, 245, 255, 0.25);
+}
+.theme-glass {
+  --accent: #7aa2ff;
+  --glow: rgba(122, 162, 255, 0.12);
+  --bg: rgba(255, 255, 255, 0.04);
+}
+.theme-anime {
+  --accent: #ff5edb;
+  --glow: rgba(255, 94, 219, 0.2);
+}
+.theme-orange {
+  --accent: #ff8a65;
+  --glow: rgba(255, 138, 101, 0.35);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* This is the "magic" that makes it act like 'center/cover' */
+  z-index: -1; /* Pushes it behind your text */
+}
+
+body {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+header {
+  position: relative;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent);
+  overflow: hidden;
+}
+
+.xeno {
+  margin: 0 auto;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.logo {
+  font-family: "Outfit", sans-serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+
+  text-decoration: none;
+  color: #fff;
+  display: flex;
+  align-items: center;
+}
+
+.logo span {
+  background: linear-gradient(to right, var(--primary), var(--primary-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+nav {
+  display: flex;
+  gap: 1.5rem;
+  font-weight: 600;
+}
+
+nav a {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  position: relative;
+}
+
+nav a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  left: 0;
+  bottom: -4px;
+  background: #ff8a65;
+  transition: width 0.3s ease;
+}
+
+nav a:hover {
+  color: #ff8a65;
+}
+
+nav a:hover::after {
+  width: 100%;
+}
+
+.cta {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.cta:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 15px 40px rgba(255, 138, 101, 0.4);
+}
+
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.mobile-menu.active {
+  display: flex;
+}
+
+.mobile-menu a {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  padding: 0.5rem 0;
+}
+
+.hero {
+  text-align: center;
+  padding: 5rem 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--glass-border);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Main Content - No Header as requested */
+/*main {
+  padding: 20px 2.5% 30px;
+  max-width: 1400px;
+  margin: 0 auto;
+}*/
+
+/* --- 3. LAYOUT GRID (Watch Area) --- */
+.watch {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 20px;
+  max-width: 1400px;
+  margin: 20px auto;
+  padding: 0 10px;
+}
+
+.listof {
+  height: 100%;
+  overflow-y: auto;
+  max-height: 700px;
+  scrollbar-width: thin;
+  /* The first color is the thumb, the second is the track */
+  scrollbar-color: var(--accent, #ff416c) var(--bg, #1a202c);
+}
+.listof h1 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.epic-list {
+  list-style: none;
+  display: grid;
+  gap: 2px;
+}
+.epic-list li a {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ccc;
+  padding: 12px;
+  transition: 0.2s;
+}
+.epic-list li a:hover,
+.epic-list li a.active {
+  background-color: var(--accent);
+  color: #000;
+}
+
+/* 1. Define the size and track of the scrollbar */
+.listof::-webkit-scrollbar {
+  width: 10px; /* Width of the vertical scrollbar */
+  height: 10px; /* Height of the horizontal scrollbar */
+}
+
+/* 2. Style the TRACK (the background of the scrollbar) */
+.listof::-webkit-scrollbar-track {
+  background: var(
+    --bg,
+    #1a202c
+  ); /* Use a dark background color or your CSS variable */
+  border-radius: 10px;
+}
+
+/* 3. Style the THUMB (the draggable part) */
+.listof::-webkit-scrollbar-thumb {
+  background-color: var(--accent, #ff416c); /* Use your accent color */
+  border-radius: 10px;
+  border: 2px solid var(--bg, #1a202c); /* Optional: Padding around the thumb */
+}
+
+/* 4. Optional: Hover state for the thumb */
+.listof::-webkit-scrollbar-thumb:hover {
+  background-color: #ff6a88; /* A slightly lighter shade of your accent */
+}
+
+/* 5. Optional: Style for the scrollbar corner (when both x and y scrollbars meet) */
+.listof::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* --- 4. PLAYER CARD STYLES --- */
+.card {
+  width: 100%;
+  border-bottom: 3px solid var(--accent);
+  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.6);
+  background: var(--bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: var(--card-radius);
+  position: relative;
+  overflow: hidden;
+  z-index: 10;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 24px rgba(255, 138, 101, 0.4);
+}
+
+/* Target the .card element when it is in standard fullscreen mode */
+.card:fullscreen {
+  /* Remove the bottom border in fullscreen */
+  border-bottom: none !important;
+  /* Remove the box shadow for a cleaner fullscreen experience */
+  box-shadow: none !important;
+  /* Ensure the background and backdrop filter are smooth */
+  background: black !important; /* or a solid background color */
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Add vendor prefixes for maximum browser compatibility */
+.card:-webkit-full-screen {
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+.card:-moz-full-screen {
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+.card:-ms-fullscreen {
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+/* --- NEW FULLSCREEN & CONTROL HIDING STYLES --- */
+
+/* 1. Fullscreen Overrides: Remove card-specific aesthetics */
+#player-root:fullscreen,
+#player-root:-webkit-full-screen,
+#player-root:-moz-full-screen,
+#player-root:-ms-fullscreen {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  border-bottom: none !important; /* Fix for the border-bottom issue */
+  background: black !important;
+}
+
+/* 2. Control Container Styling for Auto-Hide */
+.ctrl {
+  /* Ensures the controls fill the width inside the .info block */
+  width: 100%;
+
+  /* Add transition for smooth fading */
+  opacity: 1; /* Default visibility */
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* New class for when controls should be hidden */
+.ctrl.hidden-controls {
+  opacity: 0;
+  pointer-events: none; /* Prevents controls from being clickable when invisible */
+}
+
+/* Ensure the poster/video area takes up full space in fullscreen */
+#player-root:fullscreen .poster,
+#player-root:fullscreen .info {
+  width: 100%;
+  height: 100%;
+  /* Hide the entire .info block, except for the controls, when in full screen */
+  /* We'll use JS to make the controls visible/hidden */
+}
+/* You may need to adjust your main HTML structure, as currently the controls are inside the .info block.
+   For clean fullscreen, the .info block must be treated as the controls overlay. */
+
+/* --- Control Layout Adjustment (to accommodate download button) --- */
+.right-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.right-most-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between download, fullscreen, and volume */
+  margin-left: 20px; /* Space between the transport controls and the utility group */
+}
+
+.poster {
+  width: 100%;
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  position: relative;
+}
+.poster img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.28, 1);
+}
+
+.poster:hover img {
+  transform: scale(1.06);
+}
+
+.poster video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Utility class to switch between video and poster */
+.hidden {
+  display: none !important;
+}
+
+.info {
+  padding: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.03);
+}
+.top-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-between;
+}
+.song-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+}
+.meta {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Progress Bar */
+.progress-wrap {
+  margin-top: 12px;
+}
+.time-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 99px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.progress {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), #ffd89b);
+}
+
+/* Controls */
+.ctrl {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 14px;
+}
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.left-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Updated Right Controls to justify the content and create space */
+.right-controls {
+  display: flex;
+  align-items: center;
+  /* Use space-between to push 'right-most-controls' away from the next/forward buttons */
+  justify-content: space-between;
+  gap: 10px; /* Default gap between adjacent elements/groups */
+}
+
+.play-btn {
+  width: 66px;
+  height: 66px;
+  border-radius: 12px;
+  font-size: 18px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 3px solid var(--accent);
+  color: white;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: 0 0 15px var(--glow);
+}
+.play-btn:hover {
+  transform: scale(1.05);
+}
+/* NEW: Container to group fullscreen and volume and space them out */
+.right-most-controls {
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Space between the fullscreen button and volume wrapper */
+  margin-right: 0px; /* Add extra space to visually separate these controls */
+}
+
+button.icon-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: none;
+  color: var(--text);
+  padding: 8px;
+  border-radius: 8px;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  border-bottom: 3px solid var(--accent);
+  transition: 0.2s;
+}
+.vol-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+/* ... rest of your icon-btn, play-btn, and vol-wrap styles ... */
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  background: transparent;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.2);
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-top: -3px;
+}
+
+/* Settings Panel */
+.settings {
+  position: relative;
+}
+.settings-panel {
+  position: absolute;
+  right: 0;
+  bottom: 50px; /* Positioned upwards */
+  background: rgba(20, 20, 20, 0.95);
+  padding: 12px;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+  min-width: 200px;
+  display: none;
+  z-index: 100;
+  border: 1px solid #333;
+}
+.settings-panel.open {
+  display: block;
+}
+.settings-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px 0;
+  font-size: 13px;
+  color: #ccc;
+}
+.theme-picker {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+.theme-swatch {
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 1px solid white;
+}
+
+/* --- 5. DESCRIPTION & SLIDER --- */
+.container {
+  display: grid;
+  grid-template-columns: 45% 54%; /* Better ratio */
+  gap: 0.2%;
+  max-width: 1400px;
+  margin: 40px auto;
+  padding: 0 10px;
+}
+
+.One-plus {
+  background: #222;
+  padding: 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #ddd;
+}
+
+.One-plus p {
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin-bottom: 25px;
+  text-align: justify;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 150px;
+}
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20px, 1fr));
+  gap: 7px;
+}
+.meta-item label {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+}
+
+.slider {
+  position: relative;
+  width: 100%;
+  height: 350px; /* Fixed height for consistency */
+  overflow: hidden;
+  border-radius: 10px;
+  /* border: 1px solid #333;*/
+}
+.slider .images {
+  display: flex;
+  height: 100%;
+  transition: transform 0.5s ease-in-out;
+}
+.slider .image {
+  min-width: 100%;
+  height: 100%;
+  position: relative;
+}
+.slider img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.slider .description {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  backdrop-filter: blur(4px);
+}
+.slider .slider-controls {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+  pointer-events: none; /* Let clicks pass through except buttons */
+}
+.slider .slider-controls button {
+  pointer-events: auto;
+  background: rgba(248, 229, 229, 0.6);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  padding-right: 10px;
+  padding-left: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.slider .slider-controls button:hover {
+  background: var(--accent);
+}
+
+/* File Picker Style */
+.file-picker-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 16px;
+  z-index: 5;
+  transition: opacity 0.3s ease;
+}
+
+.file-picker-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pick-btn {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: "Outfit", sans-serif;
+  transition: transform 0.3s ease;
+}
+
+.pick-btn:hover {
+  transform: scale(1.05);
+}
+
+/* Split Section Below Player */
+.info-split-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 2rem auto;
+  padding: 0 5%;
+  opacity: 0;
+}
+
+/* Left Side: Description */
+.desc-side {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+}
+
+.desc-side h2 {
+  font-family: "Outfit", sans-serif;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--primary-light);
+}
+.desc-side p {
+  line-height: 1.8;
+  color: var(--text-muted);
+  font-size: 1.05rem;
+}
+
+.meta-item {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.4rem;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+}
+.meta-item label {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--primary);
+  font-weight: 800;
+}
+.meta-item span {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* Right Side: Slider */
+.slider-side {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+  position: relative;
+}
+
+.slider-side h3 {
+  font-family: "Outfit", sans-serif;
+  margin-bottom: 1.5rem;
+}
+
+.slider-container {
+  width: 100%;
+  height: 350px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+.slider-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.slide {
+  flex: 0 0 100%;
+  height: 100%;
+  position: relative;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slide-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 1.5rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+  color: #fff;
+}
+
+.slide-info h4 {
+  font-family: "Outfit", sans-serif;
+  font-size: 1.2rem;
+}
+
+footer {
+  background: rgba(255, 255, 255, 0.08);
+
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.end {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, #ffc371, #ff8a65);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.end span {
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: #fff !important;
+  color: #fff !important;
+}
+
+footer hr {
+  border: none;
+  border-top: 1px solid #ffffff;
+  margin: 10px auto 20px;
+  width: 80%;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  font-size: 0.95rem;
+  background: none !important; /* remove inherited background */
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: #ffffff !important; /* force solid white text */
+  color: #ccc !important;
+}
+
+.footer-links p {
+  margin: 5px 0;
+}
+
+.footer-links p:hover {
+  cursor: pointer;
+  color: #fff !important;
+}
+
+@media (max-width: 768px) {
+  nav,
+  .cta {
+    display: none;
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  .grid {
+    grid-template-rows: repeat(auto-fit, minmax(240px, 1fr));
+  }
+
+  main {
+    flex: 7;
+    padding: 0px;
+  }
+
+  .card {
+    border-radius: 0px;
+  }
+  .watch {
+    padding: 0px;
+    grid-template-columns: 1fr; /* Stacks vertically */
+  }
+
+  /* FIX 2: Swap order for mobile view */
+  #player-root {
+    order: -1; /* Any number less than 0 will put it first */
+  }
+
+  .listof {
+    order: 0; /* Any number greater than -1 will put it second */
+    max-height: 300px;
+    margin-bottom: 20px;
+  }
+
+  .container {
+    grid-template-columns: 1fr;
+  }
+  .slider {
+    width: 100%;
+    height: 250px;
+  }
+  .One-plus {
+    width: 100%;
+  }
+}

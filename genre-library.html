@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AniMedia | Genre Library</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;800&family=Plus+Jakarta+Sans:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link rel="stylesheet" href="series.css" />
+    <style>
+      :root {
+        --primary: #ff8a65;
+        --primary-light: #ffc371;
+        --bg-dark: #0f172a;
+        --glass-bg: rgba(255, 255, 255, 0.05);
+        --glass-border: rgba(255, 255, 255, 0.1);
+        --text-muted: #94a3b8;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        background-color: var(--bg-dark);
+        color: #fff;
+        overflow-x: hidden;
+        min-height: 100vh;
+        padding: 2rem 5%;
+      }
+
+      .bg-image {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+        filter: brightness(0.2) blur(10px);
+        transform: scale(1.1);
+      }
+
+      /* Header Area (Minimal for modularity) */
+      .page-title {
+        text-align: right;
+        margin-bottom: 3rem;
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+
+      .page-title h1 {
+        font-family: "Outfit", sans-serif;
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+      .page-title span {
+        color: var(--primary);
+      }
+      .page-title p {
+        color: var(--text-muted);
+        font-size: 0.55rem;
+      }
+
+      /* Grid */
+      .anime-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 1.5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .title-link {
+        transition: color 0.3s ease;
+      }
+
+      .title-link :hover {
+        color: var(--primary);
+      }
+      /*.anime-card {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 16px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      .anime-card:hover {
+        transform: translateY(-8px);
+        border-color: var(--primary);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      }
+
+      .poster-wrapper {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 2/3;
+        overflow: hidden;
+      }
+      .poster-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+      .anime-card:hover .poster-wrapper img {
+        transform: scale(1.1);
+      }
+
+      .title-link {
+        padding: 1rem;
+      }
+      .title-link h4 {
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .card-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+      }
+      .score {
+        color: var(--primary-light);
+        font-weight: 700;
+      }*/
+
+      /* Pagination */
+      .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1.5rem;
+        margin-top: 4rem;
+        opacity: 0;
+      }
+
+      .page-btn {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        color: #fff;
+        padding: 0.8rem 1.5rem;
+        border-radius: 12px;
+        cursor: pointer;
+        font-weight: 700;
+        transition: all 0.3s ease;
+      }
+
+      .page-btn:hover:not(:disabled) {
+        background: var(--primary);
+        border-color: var(--primary);
+        transform: translateY(-3px);
+      }
+      .page-btn:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+      }
+
+      /* Loader */
+      .loader {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 5rem;
+        font-size: 2rem;
+        color: var(--primary);
+      }
+
+      /* Back Button */
+      .back-link {
+        position: fixed;
+        top: 2rem;
+        left: 2rem;
+        color: #fff;
+        text-decoration: none;
+        background: var(--glass-bg);
+        padding: 0.6rem 1rem;
+        border-radius: 10px;
+        backdrop-filter: blur(5px);
+        border: 1px solid var(--glass-border);
+        z-index: 10;
+        transition: all 0.3s ease;
+      }
+      .back-link:hover {
+        background: var(--primary);
+        border-color: var(--primary);
+      }
+    </style>
+  </head>
+  <body>
+    <img src="assets/hero_bg.jpg" class="bg-image" id="bgBlur" />
+
+    <a href="genre.html" class="back-link"
+      ><i class="fas fa-arrow-left"></i> Back to Genres</a
+    >
+
+    <div class="page-title" id="pageHeader">
+      <h1>Genre: <span id="genreNameDisplay">Loading...</span></h1>
+      <p>Real-time results from the global library</p>
+    </div>
+
+    <div class="anime-grid" id="animeGrid">
+      <div class="loader"><i class="fas fa-circle-notch fa-spin"></i></div>
+    </div>
+
+    <div class="pagination" id="pagination">
+      <button class="page-btn" id="prevBtn" disabled>Previous</button>
+      <span id="pageInfo">Page 1</span>
+      <button class="page-btn" id="nextBtn">Next</button>
+    </div>
+
+    <script>
+      const API_BASE = "https://api.jikan.moe/v4";
+      const urlParams = new URLSearchParams(window.location.search);
+      const genreId = urlParams.get("genre");
+      const genreName = urlParams.get("name") || "Genre";
+
+      let currentPage = 1;
+
+      document.getElementById("genreNameDisplay").innerText = genreName;
+      gsap.to("#pageHeader", { opacity: 1, y: 0, duration: 1 });
+
+      async function fetchGenreData(page = 1) {
+        const grid = document.getElementById("animeGrid");
+        grid.innerHTML =
+          '<div class="loader"><i class="fas fa-circle-notch fa-spin"></i></div>';
+
+        try {
+          const response = await fetch(
+            `${API_BASE}/anime?genres=${genreId}&page=${page}&limit=20&order_by=score&sort=desc`,
+          );
+          const data = await response.json();
+          renderAnime(data.data);
+          updatePagination(data.pagination);
+        } catch (error) {
+          console.error("Error:", error);
+          grid.innerHTML =
+            '<p style="grid-column: 1/-1; text-align: center;">Error loading genre library.</p>';
+        }
+      }
+
+      function renderAnime(list) {
+        const grid = document.getElementById("animeGrid");
+        grid.innerHTML = "";
+
+        if (list.length === 0) {
+          grid.innerHTML =
+            '<p style="grid-column: 1/-1; text-align: center;">No anime found in this genre.</p>';
+          return;
+        }
+
+        list.forEach((anime) => {
+          const card = document.createElement("div");
+          card.className = "anime-card";
+          card.innerHTML = `
+                    <div class="poster">
+                        <div class="score-tag">${anime.score || "N/A"}</div>
+                        <img src="${anime.images.webp.large_image_url}" alt="${anime.title}" loading="lazy">
+                    </div>
+                    <div class="info">
+                        <a href="description-page.html?id=${anime.mal_id}" class="title-link">
+                            <div class="title" title="${anime.title}">${anime.title}</div>
+                        </a>
+                        <div class="subtitle">
+                            <span>${anime.type || "TV"}</span>
+                            <span>${anime.year || anime.status}</span>
+                        </div>
+                        <div class="badges">
+                            <div class="badge active">EP: ${anime.episodes || "?"}</div>
+                            <div class="badge">SUB</div>
+                        </div>
+                    </div>
+                `;
+          card.onclick = () =>
+            (window.location.href = `description-page.html?id=${anime.mal_id}`);
+          grid.appendChild(card);
+        });
+
+        gsap.to(".anime-card", {
+          opacity: 1,
+          y: 0,
+          stagger: 0.05,
+          duration: 0.8,
+          ease: "power4.out",
+        });
+        gsap.to("#pagination", { opacity: 1, duration: 1 });
+      }
+
+      function updatePagination(pagination) {
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const pageInfo = document.getElementById("pageInfo");
+
+        prevBtn.disabled = currentPage === 1;
+        nextBtn.disabled = !pagination.has_next_page;
+        pageInfo.innerText = `Page ${currentPage}`;
+      }
+
+      document.getElementById("prevBtn").onclick = () => {
+        if (currentPage > 1) {
+          currentPage--;
+          fetchGenreData(currentPage);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      };
+
+      document.getElementById("nextBtn").onclick = () => {
+        currentPage++;
+        fetchGenreData(currentPage);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+
+      if (genreId) fetchGenreData();
+    </script>
+  </body>
+</html>
