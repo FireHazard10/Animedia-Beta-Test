@@ -207,6 +207,26 @@
         background: var(--primary);
         border-color: var(--primary);
       }
+
+      @media (max-width: 768px) {
+        .anime-grid {
+          grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+          gap: 1rem;
+        }
+
+        .page-title h1 {
+          font-family: "Outfit", sans-serif;
+          font-size: 0.75rem;
+          margin-bottom: 0.5rem;
+        }
+        .page-title span {
+          color: var(--primary);
+        }
+        .page-title p {
+          color: var(--text-muted);
+          font-size: 0.275rem;
+        }
+      }
     </style>
   </head>
   <body>
