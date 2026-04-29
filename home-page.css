@@ -392,7 +392,7 @@ aside {
 .anime-header-container {
   display: flex;
   align-items: center;
-  margin: 10px 0;
+  margin: 2px 0;
   position: relative;
   /*max-width: 800px;*/
 }
@@ -404,7 +404,7 @@ aside {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 15px 40px;
+  padding: 15px 20px;
   background: var(--bg-glass);
   /* Creates the angled ends without messy skewing */
   /* clip-path: polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%);
@@ -603,77 +603,112 @@ aside {
 .gridx {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1.5rem;
+  gap: 1.4rem;
   padding: 20px;
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.08);
-  border-bottom: 3px #ff8a65 solid;
+  position: relative;
+  border-radius: 6px;
   overflow: hidden;
+  aspect-ratio: 2 / 3; /* locks poster ratio — no fixed height needed */
+  cursor: pointer;
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+  border-bottom: 3px #ff8a65 solid;
 }
 
 .card:hover {
+  z-index: 2;
   transform: scale(1.05);
   box-shadow: 0 6px 24px rgba(255, 138, 101, 0.4);
 }
 
-.poster img {
+/* ── Poster fills the entire card ── */
+.card .poster {
+  position: absolute;
+  inset: 0;
+}
+
+.card .poster img {
   width: 100%;
-  height: 260px;
+  height: 100%;
   object-fit: cover;
+  object-position: center top;
   display: block;
 }
 
-.info {
+/* ── Gradient overlay so text is legible ── */
+.card .overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.88) 0%,
+    rgba(0, 0, 0, 0.35) 45%,
+    transparent 72%
+  );
+  pointer-events: none;
+}
+
+/* ── Bottom accent line ── */
+.card::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+}
+
+/* ── Info floats over the image ── */
+.card .info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   padding: 0.9rem 1rem 1.2rem;
 }
 
-.title {
-  font-weight: 600;
+.card .title {
   font-size: 1rem;
-  margin-bottom: 0.4rem;
-  color: #fff8f0;
+  font-weight: 600;
+  color: #fff;
   line-height: 1.3;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-bottom: 0.2rem;
 }
 
-.subtitle {
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.7);
+.card .subtitle {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.6);
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.3rem;
 }
 
-.badges {
+.card .badges {
   display: flex;
   gap: 0.4rem;
   flex-wrap: wrap;
 }
 
-.badge {
+.card .badge {
   padding: 0.25rem 0.6rem;
   font-size: 0.75rem;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.15);
-  color: #fff;
   font-weight: 500;
   letter-spacing: 0.5px;
-  transition: background 0.2s ease;
-  cursor: pointer;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
 }
 
-.badge.actixe {
-  background: linear-gradient(135deg, #ff8a65, #ffc371);
+.card .badge.active {
+  background: #ff8a65;
+  color: #fff;
 }
 
 .updown {
