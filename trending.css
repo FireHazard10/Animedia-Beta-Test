@@ -1,6 +1,6 @@
 /* ---------------------------------------------
    TRENDING SECTION (Desktop)
----------------------------------------------- */
+*/
 .trending {
   /* background: url(Pictures04/background-bamboo-surface-mat.jpg) no-repeat;
   backdrop-filter: blur(10px);
@@ -80,11 +80,11 @@
 }
 
 /* Rotated Title */
-.trend-item h3 {
+.titlex {
   position: absolute;
-  bottom: 0;
-  left: -35px;
-  width: 310px;
+  bottom: 7px;
+  right: -110%;
+  width: 250px;
   transform: rotate(-90deg);
   transform-origin: left bottom;
   text-align: left;
@@ -135,6 +135,24 @@
   right: 5px;
 }
 
+/*loader*/
+.loader {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 50px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+  nav {
+    display: none;
+  }
+}
+
 /* ---------------------------------------------
    MOBILE (≤768px)
    Change layout ONLY on mobile
@@ -175,9 +193,9 @@
     height: 220px;
   }
 
-  .trend-item h3 {
-    left: -30px;
-    width: 220px;
+  .titlex {
+    left: 30px;
+    width: 150px;
     font-size: 0.8rem;
   }
 }
