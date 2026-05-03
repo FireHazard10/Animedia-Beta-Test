@@ -21,7 +21,7 @@
   /* Removed backdrop-filter for performance and a cleaner look, unless strictly required */
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4); /* Stronger, more dramatic shadow */
   width: 100%;
-  max-width: 1200px; /* Limit max width for better readability */
+  /* max-width: 1200px; /* Limit max width for better readability */
   margin: 15px auto;
 }
 
