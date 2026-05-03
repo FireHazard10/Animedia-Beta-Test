@@ -55,7 +55,7 @@
     </div>
 
     <video autoplay muted loop playsinline id="bg-video">
-      <source src="❤️X/horizon-sky-tree-moewalls-com.mp4" type="video/mp4" />
+      <source src="mp4/horizon-sky-tree-moewalls-com.mp4" type="video/mp4" />
     </video>
 
     <main>
@@ -167,9 +167,9 @@
           // Jikan API uses letter parameter for filtering by starting character
           const letterParam =
             currentLetter === "0-9" ? "" : `&letter=${currentLetter}`;
-          url = `${API_BASE}/anime?page=${page}&limit=20${letterParam}&order_by=title&sort=asc`;
+          url = `${API_BASE}/anime?page=${page}&limit=24${letterParam}&order_by=title&sort=asc`;
         } else {
-          url = `${API_BASE}/top/anime?page=${page}&limit=20`;
+          url = `${API_BASE}/top/anime?page=${page}&limit=24`;
         }
 
         try {
