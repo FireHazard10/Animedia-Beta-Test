@@ -57,7 +57,7 @@
     .dancing-gif {
       position: relative;
       margin-top: 20px;
-      height: 597px;
+      height: 870px;
       overflow: hidden;
       border-radius: 12px;
     }
@@ -72,14 +72,18 @@
       align-items: center;
     }
 
-    /* .section-header {
-        }*/
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
 
     .section-header h2 {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      width: 93%;
+      width: 100%;
       font-family: "Oxanium", sans-serif;
       font-size: 1.8rem;
       font-weight: 700;
@@ -117,10 +121,10 @@
     /* ── Grid ── */
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
       gap: 0.75rem;
       width: 100%;
-      max-width: 780px;
+      /*max-width: 780px;
       /*border: 3px solid red;*/
     }
 
@@ -597,7 +601,6 @@
         <div class="x-ero-content">
           <div class="meta">Blue • Welcome white</div>
           <h1>WELCOME</h1>
-          <p class="sub">J-Peg — motto: xxx-xxx-xxxx</p>
         </div>
       </section>
     </div>
@@ -1151,9 +1154,9 @@
     <script src="home-page.js"></script>
     <script src="assist-btn.js"></script>
     <script src="slides.js"></script>
-    <script src="popular.js"></script>
-    <script src="mouse2.js"></script>
-    <script src="easypages.js"></script>
+
+    <script src="multi_api_popular.js"></script>
+    <script src="slider.js"></script>
     <script>
       const randoms = [
         {
